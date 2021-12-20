@@ -10,18 +10,18 @@ function init() {
    // document.querySelector('.todo__options').addEventListener('change', this.update);
 }*/
 
-function AddItem() {
-    let tdI = document.getElementById('todo_item').value;
-    if (tdI) {
-        document.getElementById('td_items').innerHTML += '<li>'+tdI+'</li>';
+function addItem() {
+    let tdI = document.getElementById('todo_item');
+    if (tdI.value) {
+        document.getElementById('td_items').innerHTML += '<li>'+tdI.value+'</li>';
        // save();
     }
-        document.getElementById('todo_item').value = '';
-        document.getElementById('todo_item').focus();
+        tdI.value = '';
+        tdI.focus();
 }
 
-function KeyPress(event) {
-    if (event.which == 13) AddItem();
+function keyPress(event) {
+    if (event.which == 13) addItem();
 }
 
 /*window.onload = function() {
