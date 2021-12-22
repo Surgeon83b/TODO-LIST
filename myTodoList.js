@@ -1,28 +1,76 @@
-// saving todo_item into localStorage
-function save(elem) {
-    localStorage.setItem(++localStorage.length, elem);
+let todoList = document.getElementById("td_items");
+let noOfTodos = document.getElementById("noOfTodos");;
+
+const refreshHTML = () => {
+    todoList.innerHTML = "";
+    let it = JSON.parse(localStorage["list"]);
+    let item;
+    localStorage.setItem("num_of_todos", it.length);
+    if (it)
+        for (let i = 0; i < it.length; i++) {
+            item = it[i];
+            let noftod = Number(localStorage.getItem("num_of_todos"));
+            addToHTML(item, i);
+    };
+    noOfTodos.innerHTML = it.length;
+  };
+
+  window.addEventListener("load", () => {
+    refreshHTML();
+  });
+
+// adding of HTML objects that display our TODO list
+function addToHTML (item, id) {
+    let list = document.createElement("li");
+    let spanWithValue = document.createElement("span");
+    let spanWithBtn = document.createElement("button");
+  
+    spanWithValue.innerText = item;
+    spanWithBtn.innerText = "X";
+    spanWithBtn.style.color = "red";
+
+    spanWithBtn.addEventListener("click", () => {
+        deleteTodo(id);
+    });
+    list.appendChild(spanWithValue);
+    list.appendChild(spanWithBtn);
+    todoList.appendChild(list);
 }
 
-// restoring data from localStorage
-function init() {
-    let it = "";
-    if (localStorage.length)
-        for (let i = 1; i <= localStorage.length; i++) {
-            it = localStorage.getItem(i);
-            document.getElementById('td_items').innerHTML += '<li>'+ it +'</li>';
-    }
+// saving todo_item into localStorage
+function save(elem) {
+    let it = [];
+    let numoftodos = JSON.parse(localStorage["num_of_todos"]);
+    if (localStorage["list"])   it = JSON.parse(localStorage["list"]);
+    it.push(elem);
+    localStorage.setItem("list", JSON.stringify(it));
 }
 
 // adding todo_item to the HTML-list and to localStorage
 function addItem() {
-    tdI = document.getElementById('todo_item');
+    tdI = document.getElementById("todo_item");
     if (tdI.value) {
-        document.getElementById('td_items').innerHTML += '<li>'+ tdI.value +'</li>';
+        let noftod = Number(localStorage.getItem("num_of_todos"));
+        noftod++;
+        addToHTML (tdI.value, noftod-1); 
+        localStorage.setItem("num_of_todos", String(noftod));
+
         save(tdI.value);
         tdI.value = '';
+        noOfTodos.innerText = noftod;
     }   
     tdI.focus();
 }
+
+// listener of delete buttons pushing
+const deleteTodo = (index) => {
+   // alert(index);
+    let it = [];
+        it = JSON.parse(localStorage["list"]);
+        it.splice(index, 1);
+        localStorage.setItem("list", JSON.stringify(it));
+        refreshHTML();
+  }
 
 // reaction on Enter pressing
 function keyPress(event) {
@@ -31,10 +79,7 @@ function keyPress(event) {
 
 // reaction on F5 pressing
 window.onload = function() {
-    init();
-}
-
-// clear localStorage on page loading
-document.onload = function() {
-    localStorage.clear();
+   todoList = document.getElementById("td_items");
+   let noOfTodos = document.getElementById("noOfTodos");
+   refreshHTML();
 }

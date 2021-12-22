@@ -3,7 +3,7 @@
     margin: 15px auto;
 }
 
-button {
+.add_button {
     background-color: #af4caa; /* Violet */
     border: 2px solid #a9d4ab;
     border-radius: 50%;
@@ -19,4 +19,6 @@ li {
    border: 2px solid #f5e941; 
    border-radius: 20%;
    width: fit-content;
+   height: 18pt;
 }
+
